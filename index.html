@@ -1,52 +1,156 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>What colour is it?</title><meta charset="UTF-8" ><link href='http://fonts.googleapis.com/css?family=Open+Sans:800,400,300' rel='stylesheet' type='text/css'>
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+        <style>
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Whatcolorisit : Inspired by and based off of http://whatcolourisit.scn9a.org/, with a new method of calculating colors and gradients.">
+        @media all and (max-width: 1024px) {
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+        h1 { font-family:"open sans"; font-size:40px; font-weight:300; color:white; transition:all 0.6s; -webkit-transition:all 0.6s;}
+        h2 { font-family:"open sans"; font-size:20px; font-weight:300; color:white; transition:all 0.6s; -webkit-transition:all 0.6s;}
 
-    <title>Whatcolorisit</title>
-  </head>
+        }
 
-  <body>
+        @media all and (min-width: 1024px) {
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/vulpino/whatcolorisit">View on GitHub</a>
+        h1 { font-family:"open sans"; font-size:120px; font-weight:300; color:white; transition:all 0.6s; -webkit-transition:all 0.6s;}
+        h2 { font-family:"open sans"; font-size:30px; font-weight:300; color:white; transition:all 0.6s; -webkit-transition:all 0.6s;}
 
-          <h1 id="project_title">Whatcolorisit</h1>
-          <h2 id="project_tagline">Inspired by and based off of http://whatcolourisit.scn9a.org/, with a new method of calculating colors and gradients.</h2>
+        }
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/vulpino/whatcolorisit/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/vulpino/whatcolorisit/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+        table { position:absolute; width:100%; height:100%; top:0px; left:0px;}
+        .fb-like {position:static; width:100px;}
+        </style>
+    </head>
+<body onLoad="doTheThing()">
+    <table>
+        <td height="100%" width="100%" align="center" valign="middle">
+            <h1 id="t"></h1><br>
+            <h2 id="h"></h2>
+        </td>
+    </table>
+</body>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a id="whatcolorisit" class="anchor" href="#whatcolorisit" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatcolorisit</h1>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
-<p>Inspired by and based off of <a href="http://whatcolourisit.scn9a.org/">http://whatcolourisit.scn9a.org/</a>, with a new method of calculating colors and gradients.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Whatcolorisit maintained by <a href="https://github.com/vulpino">vulpino</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+<script type="text/javascript">
     
+    function doTheThing(){
+        
+        function timeToHex(time){
+            if(time === 0){
+                return "#000000"
+            } else if(time > 0 && time < 256){
+                return "#" + time.toString(16) + "0000";
+            } else if(time === 256){
+                return "#ff0000";
+            } else if(time > 256 && time < 768){
+                return "#" + 
+                    (((768 - time)/2) - 
+                     ((time%2)/2)).toString(16) + 
+                    (((time - 256)/2) -
+                     ((time%2)/2)).tostring(16) +
+                    "00";
+            } else if(time === 768){
+                return "#00ff00";
+            } else if(time > 768 && time < 1280){
+                return "#00" +
+                    (((1280 - time)/2) -
+                     ((time%2)/2)).toString(16) +
+                    (((time - 768)/2) -
+                     ((time%2)/2)).toString(16);
+            } else if(time === 1280){
+                return "#0000ff";
+            } else if(time > 1280 && time < 1536){
+                return "#0000" + (1536 - time).toString(16);
+            } else if(time === 1536) {
+                return "#000000";
+            } else {
+                print("u broke it");
+            }
+        }
+        
+        function getDayColor(date) {
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var daysSoFar = 0;
+            var colorOfTheDay = 0;
 
-  </body>
+            if(year%4 === 0){ //then it's a leap year
+                if(month === 0){ daysSoFar = day; }
+                else if(month === 1){ daysSoFar = 31 + day; }
+                else if(month === 2){ daysSoFar = 60 + day; }
+                else if(month === 3){ daysSoFar = 91 + day; }
+                else if(month === 4){ daysSoFar = 121 + day; }
+                else if(month === 5){ daysSoFar = 152 + day; }
+                else if(month === 6){ daysSoFar = 182 + day; }
+                else if(month === 7){ daysSoFar = 213 + day; }
+                else if(month === 8){ daysSoFar = 244 + day; }
+                else if(month === 9){ daysSoFar = 274 + day; }
+                else if(month === 10){ daysSoFar = 305 + day; }
+                else if(month === 11){ daysSoFar = 335 + day ;}
+                colorOfTheDay = Math.round(daysSoFar*(1536/366));
+            }else{
+                if(month === 0){ daysSoFar = day; }
+                else if(month === 1){ daysSoFar = 31 + day; }
+                else if(month === 2){ daysSoFar = 59 + day; }
+                else if(month === 3){ daysSoFar = 90 + day; }
+                else if(month === 4){ daysSoFar = 120 + day; }
+                else if(month === 5){ daysSoFar = 151 + day; }
+                else if(month === 6){ daysSoFar = 181 + day; }
+                else if(month === 7){ daysSoFar = 212 + day;}
+                else if(month === 8){ daysSoFar = 243 + day; }
+                else if(month === 9){ daysSoFar = 273 + day; }
+                else if(month === 10){ daysSoFar = 304 + day; }
+                else if(month === 11){ daysSoFar = 334 + day; }
+                colorOfTheDay = Math.round(daysSoFar*(1536/365));
+            }
+
+            return timeToHex(colorOfTheDay);
+            
+        }
+        
+        function getTimeColor(date){
+            var hours = date.getHours() + 1;
+            var mins = date.getMinutes() + 1;
+            var secs = date.getSeconds() + 1;
+            var secondsSinceMidnight = Math.round(hours*3600 + mins*60 + secs);
+            var colorOfTheTime = Math.round(secondsSinceMidnight/56.25);
+            return timeToHex(colorOfTheTime);
+        }    
+
+        function updateClock(){
+
+            var d = new Date();
+            var hours = d.getHours();
+            var mins = d.getMinutes();
+            var secs = d.getSeconds();
+            var colorOfTheDayHex = getDayColor(d);
+            var colorOfTheTimeHex = getTimeColor(d);
+            
+            if (hours < 10){hours = "0" + hours};
+            if (mins < 10){mins = "0" + mins};
+            if (secs < 10){secs = "0" + secs};
+            
+            console.log(colorOfTheDayHex);
+            console.log(colorOfTheTimeHex);
+
+            $("body").css({"transition": "all 0.8s", "-webkit-transition": "all 0.8s"});
+            $("#t").html(hours + " : " + mins);
+            $("#h").html(colorOfTheDayHex.toString() + " , " + colorOfTheTimeHex.toString());
+            document.body.style.background = "linear-gradient( to right bottom, " + 
+                colorOfTheDayHex.toString() + ", " + colorOfTheTimeHex.toString() + " )";
+
+            setTimeout(function(){ updateClock();}, 1000);
+        }
+        
+        updateClock();
+        
+    }
+
+</script>
+
 </html>
