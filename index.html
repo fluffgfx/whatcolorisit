@@ -39,32 +39,40 @@
     
     function doTheThing(){
         
+        function checkProperLength(color){
+            if(color.length < 2){
+                return "0" + color;
+            } else {
+                return color;
+            }
+        }
+        
         function timeToHex(time){
             if(time === 0){
                 return "#000000"
             } else if(time > 0 && time < 256){
-                return "#" + time.toString(16) + "0000";
+                return "#" + checkProperLength(time.toString(16)) + "0000";
             } else if(time === 256){
                 return "#ff0000";
             } else if(time > 256 && time < 768){
                 return "#" + 
-                    (((768 - time)/2) - 
-                     ((time%2)/2)).toString(16) + 
-                    (((time - 256)/2) -
-                     ((time%2)/2)).tostring(16) +
+                    checkProperLength((((768 - time)/2) - 
+                     ((time%2)/2)).toString(16)) + 
+                    checkProperLength((((time - 256)/2) -
+                     ((time%2)/2)).tostring(16)) +
                     "00";
             } else if(time === 768){
                 return "#00ff00";
             } else if(time > 768 && time < 1280){
                 return "#00" +
-                    (((1280 - time)/2) -
-                     ((time%2)/2)).toString(16) +
-                    (((time - 768)/2) -
-                     ((time%2)/2)).toString(16);
+                    checkProperLength((((1280 - time)/2) -
+                     ((time%2)/2)).toString(16)) +
+                    checkProperLength((((time - 768)/2) -
+                     ((time%2)/2)).toString(16));
             } else if(time === 1280){
                 return "#0000ff";
             } else if(time > 1280 && time < 1536){
-                return "#0000" + (1536 - time).toString(16);
+                return "#0000" + checkProperLength((1536 - time).toString(16));
             } else if(time === 1536) {
                 return "#000000";
             } else {
