@@ -48,36 +48,29 @@
         }
         
         function timeToHex(time){
-            if(time === 0){
-                return "#000000"
-            } else if(time > 0 && time < 256){
-                return "#" + checkProperLength(time.toString(16)) + "0000";
-            } else if(time === 256){
-                return "#ff0000";
-            } else if(time > 256 && time < 768){
-                return "#" + 
-                    checkProperLength((((768 - time)/2) - 
-                     ((time%2)/2)).toString(16)) + 
-                    checkProperLength((((time - 256)/2) -
-                     ((time%2)/2)).toString(16)) +
-                    "00";
-            } else if(time === 768){
-                return "#00ff00";
-            } else if(time > 768 && time < 1280){
-                return "#00" +
-                    checkProperLength((((1280 - time)/2) -
-                     ((time%2)/2)).toString(16)) +
-                    checkProperLength((((time - 768)/2) -
-                     ((time%2)/2)).toString(16));
-            } else if(time === 1280){
-                return "#0000ff";
-            } else if(time > 1280 && time < 1536){
-                return "#0000" + checkProperLength((1536 - time).toString(16));
-            } else if(time === 1536) {
-                return "#000000";
-            } else {
-                console.log("something broke");
+            // time is a value from 0 to 1440
+            // if it is from 0-240 we convert it to a shade of red
+            // if it is from 240-480 we convert it to a shade of orange
+            // if it is from 480-720 we convert it to a shade of yellow
+            // if it is from 720-960 we convert it to a shade of green
+            // if it is from 960-1200 we convert it to a shade of blue
+            // if it is from 1200-1440 we convert it to a shade of purple
+            fraction = 256*((time%240)/240);
+            nfraction = 256*(Math.abs(((time%240)-240))/240);
+            if(time < 240){
+              result = "ff" + checkProperLength(fraction.toString(16)) + "0000";
+            }else if(time < 480){
+              result = checkProperLength(nfraction.toString(16)) + "ff00"; 
+            }else if(time < 720){
+              result = "00ff" + checkProperLength(fraction.toString(16));
+            }else if(time < 960){
+              result = "00" + checkProperLength(nfraction.toString(16)) + "ff";
+            }else if(time < 1200){
+              result = checkProperLength(fraction.toString(16)) + "00ff";
+            }else if(time < 1440){
+              result = "ff00" + checkProperLength(nfraction.toString(16));
             }
+            return "#" + result.substring(0,6);
         }
         
         function getDayColor(date) {
@@ -100,7 +93,7 @@
                 else if(month === 9){ daysSoFar = 274 + day; }
                 else if(month === 10){ daysSoFar = 305 + day; }
                 else if(month === 11){ daysSoFar = 335 + day ;}
-                colorOfTheDay = Math.round(daysSoFar*(1536/366));
+                colorOfTheDay = Math.round(daysSoFar*(1440/366));
             }else{
                 if(month === 0){ daysSoFar = day; }
                 else if(month === 1){ daysSoFar = 31 + day; }
@@ -114,7 +107,7 @@
                 else if(month === 9){ daysSoFar = 273 + day; }
                 else if(month === 10){ daysSoFar = 304 + day; }
                 else if(month === 11){ daysSoFar = 334 + day; }
-                colorOfTheDay = Math.round(daysSoFar*(1536/365));
+                colorOfTheDay = Math.round(daysSoFar*(1440/365));
             }
 
             return timeToHex(colorOfTheDay);
@@ -122,11 +115,11 @@
         }
         
         function getTimeColor(date){
-            var hours = date.getHours() + 1;
-            var mins = date.getMinutes() + 1;
-            var secs = date.getSeconds() + 1;
+            var hours = date.getHours();
+            var mins = date.getMinutes();
+            var secs = date.getSeconds();
             var secondsSinceMidnight = Math.round(hours*3600 + mins*60 + secs);
-            var colorOfTheTime = Math.round(secondsSinceMidnight/56.25);
+            var colorOfTheTime = Math.round(secondsSinceMidnight/60);
             return timeToHex(colorOfTheTime);
         }    
 
