@@ -55,8 +55,8 @@
             // if it is from 720-960 we convert it to a shade of green
             // if it is from 960-1200 we convert it to a shade of blue
             // if it is from 1200-1440 we convert it to a shade of purple
-            fraction = 256*((time%240)/240);
-            nfraction = 256*((240-(time%240))/240);
+            fraction = Math.round(256*((time%240)/240));
+            nfraction = Math.round(256*((240-(time%240))/240));
             if(time < 240){
               result = "ff" + checkProperLength(fraction.toString(16)) + "0000";
             }else if(time < 480){
